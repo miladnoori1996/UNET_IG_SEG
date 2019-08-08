@@ -13,6 +13,7 @@ from tensorflow.keras import backend as keras
 
 
 
+
 def dice_coef(y_true, y_pred):
     smooth = 1.
     y_true_f = keras.flatten(y_true)
@@ -66,7 +67,10 @@ def unet(pretrained_weights = None,input_size = (256,512,3)):
     conv9 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(merge9)
     conv9 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
     conv9 = Conv2D(2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
-    conv10 = Conv2D(10, 1, activation = 'sigmoid')(conv9)
+    conv10 = Conv2D(10, 1, activation = 'sigmoid', name="out_put")(conv9)
+
+    print(tf.keras.backend.print_tensor(conv10, message="x is: "))
+    
 
     model = tf.keras.Model(inputs=input_layer, outputs=conv10)
 
@@ -80,4 +84,3 @@ def unet(pretrained_weights = None,input_size = (256,512,3)):
     return model
 
 unet()
-
